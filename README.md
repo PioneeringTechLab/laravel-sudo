@@ -97,14 +97,14 @@ Add the middleware to your `$routeMiddleware` array in `app/Http/Kernel.php` to 
 
 ```
 protected $routeMiddleware = [
-	//...
+   //...
 
-	'sudo' => \CSUNMetaLab\Sudo\Http\Middleware\Sudo::class,
+   'sudo' => \CSUNMetaLab\Sudo\Http\Middleware\Sudo::class,
 
-	// You can also use this based on Laravel convention:
-	// 'sudo' => 'CSUNMetaLab\Sudo\Http\Middleware\Sudo',
+   // You can also use this based on Laravel convention:
+   // 'sudo' => 'CSUNMetaLab\Sudo\Http\Middleware\Sudo',
 
-	//...
+   //...
 ];
 ```
 
