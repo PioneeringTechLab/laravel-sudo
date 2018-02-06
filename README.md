@@ -18,9 +18,11 @@ This package also integrates with the [Laravel Directory Authentication](https:/
 * [Required Environment Variables](#required-environment-variables)
 * [Optional Environment Variables](#optional-environment-variables)
 * [Routing](#routing)
-    * [Enforcing Sudo Mode](#enforcing-sudo-mode)
+    * [Display Sudo Form](#display-sudo-form)
+    * [Process Sudo Form](#process-sudo-form)
 * [Middleware](#middleware)
     * [Sudo Middleware](#sudo-middleware)
+    * [Enforcing Sudo Mode](#enforcing-sudo-mode)
 * [Controller](#controller)
     * [Showing the Sudo Form](#showing-the-sudo-form)
     * [Processing the Sudo Form](#processing-the-sudo-form)
@@ -124,7 +126,7 @@ The following assets are published:
 
 ## Required Environment Variables
 
-There are currently no required environment variables but there is an [optional environment variable](#optional-environment-variable).
+There are currently no required environment variables but there is an [optional environment variable](#optional-environment-variables).
 
 ## Optional Environment Variables
 
@@ -136,17 +138,32 @@ Default is two hours (7200 seconds).
 
 ## Routing
 
-TBD
+In all cases for the routes exposed by the package, you are free to modify the path of the route but keep these two constraints in mind:
 
-### Enforcing Sudo Mode
+1. Please **do not** modify the HTTP method of the routes unless you are also planning to modify the published view.
+2. Please **do not** modify the route names since both the underlying controller functionality as well as the published view use them.
 
-TBD
+### Display Sudo Form
+
+* Path: `/sudo`
+* HTTP method: `GET`
+* Route name: `sudo.create`
+
+### Process Sudo Form
+
+* Path: `/sudo`
+* HTTP method: `POST`
+* Route name: `sudo.store`
 
 ## Middleware
 
 TBD
 
 ### Sudo Middleware
+
+TBD
+
+### Enforcing Sudo Mode
 
 TBD
 
@@ -164,15 +181,29 @@ TBD
 
 ## Custom Form Request
 
-TBD
+The controller leverages a custom form request class in order to accept and process the input. The form request exposes custom validation rules and error messages.
 
 ### Sudo Form Request
 
-TBD
+This class is namespaced as `CSUNMetaLab\Sudo\Http\Requests\SudoFormRequest`.
+
+Most of the data required for processing will be added by the matching controller so there are not many validation rules for this request.
+
+#### Validation Rules
+
+`password.required`: the `password` field must have a non-null value in the request
+
+#### Validation Messages
+
+`sudo.errors.v.password.required`: the `password` field has no input
 
 ## Custom Messages
 
-TBD
+The custom messages for this package can be found in `resources/lang/en/sudo.php` by default. The messages can also be overridden as needed.
+
+You may also translate the messages in that file to other languages to promote localization, as well.
+
+The package reads from this file (using the configured localization) for all messages it must display to the user or write to any logs.
 
 ## View
 
