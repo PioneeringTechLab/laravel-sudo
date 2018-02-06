@@ -1,0 +1,24 @@
+{
+    "name": "csun-metalab/laravel-sudo",
+    "description": "Composer package for Laravel that allows for the use of \"sudo mode\" in protected areas",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Matthew Fritz",
+            "email": "mattf@burbankparanormal.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.9"
+    },
+    "minimum-stability": "dev",
+    "autoload": {
+        "classmap": [
+            "src/Sudo/"
+        ],
+        "psr-4": {
+            "CSUNMetaLab\\Sudo\\": "src/Sudo/"
+        }
+    }
+}
