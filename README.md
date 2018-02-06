@@ -95,6 +95,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 Add the middleware to your `$routeMiddleware` array in `app/Http/Kernel.php` to enable it to protect routes:
 
+```
 protected $routeMiddleware = [
 	//...
 
@@ -105,6 +106,7 @@ protected $routeMiddleware = [
 
 	//...
 ];
+```
 
 ### Publish Everything
 
