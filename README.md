@@ -22,6 +22,8 @@ This package also integrates with the [Laravel Directory Authentication](https:/
 * [Middleware](#middleware)
     * [Sudo Middleware](#sudo-middleware)
 * [Controller](#controller)
+    * [Showing the Sudo Form](#showing-the-sudo-form)
+    * [Processing the Sudo Form](#processing-the-sudo-form)
 * [Custom Form Request](#custom-form-request)
     * [Sudo Form Request](#sudo-form-request)
 * [Custom Messages](#custom-messages)
