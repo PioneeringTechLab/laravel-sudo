@@ -1,6 +1,6 @@
 {
     "name": "csun-metalab/laravel-sudo",
-    "description": "Composer package for Laravel that allows for the use of \"sudo mode\" in protected areas",
+    "description": "Composer package for Laravel 5.0 and above that allows for the use of \"sudo mode\" in protected areas",
     "type": "library",
     "license": "MIT",
     "authors": [

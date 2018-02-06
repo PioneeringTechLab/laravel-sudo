@@ -1,6 +1,6 @@
 # Laravel Sudo
 
-Composer package for Laravel that allows for the use of "sudo mode" in protected areas.
+Composer package for Laravel 5.0 and above that allows for the use of "sudo mode" in protected areas.
 
 The mode will last for a pre-determined amount of time before either a re-prompt or the currently-authenticated user logs-out.
 
@@ -123,7 +123,7 @@ php artisan vendor:publish
 The following assets are published:
 
 * Configuration (tagged as `config`) - these go into your `config` directory
-* Messages (tagged as `lang`) - these go into your `resources/lang/en directory` as `sudo.php`
+* Messages (tagged as `lang`) - these go into your `resources/lang/en` directory as `sudo.php`
 * Views (tagged as `views`) - these go into your `resources/views/vendor/sudo` directory
 
 ## Required Environment Variables
@@ -134,9 +134,9 @@ There are currently no required environment variables but there is an [optional 
 
 ### SUDO_DURATION
 
-The time (in seconds) that "sudo mode" is active for the existing authenticated user before a reprompt.
+The time (in minutes) that "sudo mode" is active for the existing authenticated user before a reprompt.
 
-Default is two hours (7200 seconds).
+Default is 120 minutes (two hours).
 
 ## Routing
 
