@@ -25,7 +25,9 @@ This package also integrates with the [Laravel Directory Authentication](https:/
 
 To install from Composer, use the following command:
 
-`composer require csun-metalab/laravel-sudo`
+```
+composer require csun-metalab/laravel-sudo
+```
 
 #### Service Provider
 
@@ -80,13 +82,15 @@ Route::group(['middleware' => ['auth']], function () {
 
 Finally, run the following Artisan command to publish everything:
 
-`php artisan vendor:publish`
+```
+php artisan vendor:publish
+```
 
 The following assets are published:
 
-Configuration (tagged as `config`) - these go into your `config` directory
-Messages (tagged as `lang`) - these go into your `resources/lang/en directory` as `sudo.php`
-Views (tagged as `views`) - these go into your `resources/views/vendor/sudo` directory
+* Configuration (tagged as `config`) - these go into your `config` directory
+* Messages (tagged as `lang`) - these go into your `resources/lang/en directory` as `sudo.php`
+* Views (tagged as `views`) - these go into your `resources/views/vendor/sudo` directory
 
 ## Required Environment Variables
 
