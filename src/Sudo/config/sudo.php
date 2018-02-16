@@ -16,4 +16,17 @@ return [
     */
     'duration' => env("SUDO_DURATION", 120),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Sudo mode authentication username
+    |--------------------------------------------------------------------------
+    |
+    | The attribute in your configured User model that represents the username
+    | by which an individual authenticates.
+    |
+    | Default is "email".
+    |
+    */
+    'username' => env("SUDO_USERNAME", "email"),
+
 ];
