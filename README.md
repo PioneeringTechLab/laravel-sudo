@@ -22,6 +22,8 @@ The aforementioned integration would check whether the current user is actually 
 * [Custom Messages](#custom-messages)
     * [Validation Messages](#validation-messages)
     * [Authentication Messages](#authentication-messages)
+* [Helper Methods](#helper-methods)
+    * [Check Sudo Mode](#check-sudo-mode)
 * [View](#view)
 * [Resources](#resources)
 
@@ -103,6 +105,14 @@ The attribute in your configured `User` model that represents the username by wh
 
 Default is `email`.
 
+### SUDO_PROMPT_ONLY_WHILE_MASQUERADING
+
+This value only matters when used in conjunction with the Composer package [csun-metalab/laravel-directory-authentication](https://github.com/csun-metalab/laravel-directory-authentication) to promote further integration between the two packages.
+
+If this value is set to `true` then the user will only be re-prompted for his password if he is masquerading as someone else. If not, he will **NOT** be re-prompted; he will be able to perform the "sudo mode" actions **without** having to re-enter his password.
+
+Default is `false`.
+
 ## Middleware
 
 This package is driven primarily by a single middleware class though it contains a considerable amount of functionality and decision-making.
@@ -150,7 +160,26 @@ The package reads from this file (using the configured localization) for all mes
 
 ### Authentication Messages
 
+* `errors.a.user.invalid` - error message raised when a non-authenticated individual attempts to enter "sudo mode"
 * `errors.a.password.invalid` - error message raised when the sudo password entered does not match the user's credentials
+
+## Helper Methods
+
+The helper methods are defined within the `helpers.php` file in this package.
+
+### Check Sudo Mode
+
+You may use the `isSudoModeActive()` method to determine whether "sudo mode" is active. You may wish to invoke this method throughout your application to display a banner, for example, across the top of the screen to inform the user that he is in super-user mode.
+
+Your Blade code might look something like this:
+
+```
+@if(isSudoModeActive())
+  <div class="alert alert-info">
+    <p>You are currently in sudo mode and can perform super-user tasks.</p>
+  </div>
+@endif
+```
 
 ## View
 

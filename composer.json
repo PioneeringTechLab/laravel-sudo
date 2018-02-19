@@ -17,6 +17,9 @@
         "classmap": [
             "src/Sudo/"
         ],
+        "files": [
+            "src/Sudo/helpers.php"
+        ],
         "psr-4": {
             "CSUNMetaLab\\Sudo\\": "src/Sudo/"
         }
