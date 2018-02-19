@@ -121,8 +121,6 @@ This package is driven primarily by a single middleware class though it contains
 
 ### Enforcing Sudo Mode
 
-**NOTE**: Please do not protect routes with a `GET` method using the `sudo` middleware as the request is re-sent using the original HTTP method and data (and hence the password would become part of the URL in a `GET` submission). Use some kind of role authorization check or policy on `GET` routes instead.
-
 In order to enforce "sudo mode" you would need to protect a set of routes with both the `auth` and `sudo` middleware as shown here:
 
 ```
@@ -134,6 +132,8 @@ Route::group(['middleware' => ['auth', 'sudo']], function () {
 ```
 
 This is just an example, of course, but the above route group would first ensure that the individual is authenticated before attempting to access the sections. If the individual is authenticated, they would then be greeted with a password re-prompt if "sudo mode" is not currently active based upon the criteria set forth in the [Sudo Criteria](#sudo-criteria) section.
+
+**NOTE**: Please **do not** protect routes with a `GET` method using the `sudo` middleware as the request is re-sent using the original HTTP method and data (and hence the password would become part of the URL in a `GET` submission). Use some kind of role authorization check or policy on `GET` routes instead.
 
 ### Sudo Middleware
 
