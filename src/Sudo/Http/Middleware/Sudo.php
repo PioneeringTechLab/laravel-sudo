@@ -46,6 +46,7 @@ class Sudo
         // status or passed duration
         $show_sudo = $this->shouldShowSudo($request);
         $sudo_username = config('sudo.username');
+        $request_method = $request->method();
 
         $flash_and_show = false; // true to flash input and show sudo form
         $sudo_errors = []; // key-value pair of any error messages that arise
@@ -60,7 +61,7 @@ class Sudo
             // password was supplied since we will need to add an error if
             // that case has not been met
             $pw = $request->input('sudo_password');
-            if(empty($pw) && !$request->isMethod('get')) {
+            if(empty($pw) && !(strtolower($request_method) == 'get')) {
                 $sudo_errors['password'] = trans('sudo.errors.v.password.required');
             }
         }
@@ -116,11 +117,15 @@ class Sudo
             }
         }
 
-        // if we should flash the input and show the view, do it
+        // if we should return the input and show the view, do it
         if($flash_and_show) {
-            // drop out the "sudo_password" value but flash everything else
-            $request->flashExcept('sudo_password');
-            return view('sudo::sudo', compact('sudo_errors'));
+            // drop out the "sudo_password" and CSRF token values but return
+            // everything else for use
+            $input = $request->except('sudo_password', '_token');
+            $input_markup = generatePreviousInputMarkup($input);
+            return view('sudo::sudo', compact(
+                'sudo_errors', 'request_method', 'input', 'input_markup'
+            ));
         }
         
         return $next($request);

@@ -24,6 +24,7 @@ The aforementioned integration would check whether the current user is actually 
     * [Authentication Messages](#authentication-messages)
 * [Helper Methods](#helper-methods)
     * [Check Sudo Mode](#check-sudo-mode)
+    * [Generate Previous Input Markup](#generate-previous-input-markup)
 * [View](#view)
 * [Resources](#resources)
 
@@ -97,7 +98,7 @@ There are currently no required environment variables but there are [optional en
 
 The time (in minutes) that "sudo mode" is active for the existing authenticated user before a reprompt. This time will reset if he logs-out before the duration has been exhausted.
 
-Default is 120 minutes (two hours).
+Default is `120` (two hours).
 
 ### SUDO_USERNAME
 
@@ -179,6 +180,24 @@ Your Blade code might look something like this:
     <p>You are currently in sudo mode and can perform super-user tasks.</p>
   </div>
 @endif
+```
+
+### Generate Previous Input Markup
+
+You may use the `generatePreviousInputMarkup()` method to generate the input markup from the request that triggered entry into "sudo mode". The input elements will be rendered as hidden `<input>` elements and this method also has support for a deeply-nested input array.
+
+You would typically pass the `$input` array available in the view to this method. The `sudo_password` and `_token` values would not be included, however. A new `_token` value will need to be placed into the form within the view since the CSRF token would have been re-generated and the old token would cause an instance of `VerifyCsrfTokenException` to be thrown if it was used.
+
+Your Blade code might look something like this:
+
+```
+{!! generatePreviousInputMarkup($input) !!}
+```
+
+You may, however, opt to use the pre-generated `$input_markup` variable that will be passed to the view instead. Then your Blade code might look like this:
+
+```
+{!! $input_markup !!}
 ```
 
 ## View
