@@ -46,7 +46,10 @@ class Sudo
         // status or passed duration
         $show_sudo = $this->shouldShowSudo($request);
         $sudo_username = config('sudo.username');
+
+        // retrieve request data
         $request_method = $request->method();
+        $request_url = $this->generateRequestUrl($request);
 
         $flash_and_show = false; // true to flash input and show sudo form
         $sudo_errors = []; // key-value pair of any error messages that arise
@@ -124,7 +127,8 @@ class Sudo
             $input = $request->except('sudo_password', '_token');
             $input_markup = generatePreviousInputMarkup($input);
             return view('sudo::sudo', compact(
-                'sudo_errors', 'request_method', 'input', 'input_markup'
+                'sudo_errors', 'request_method', 'request_url', 'input',
+                'input_markup'
             ));
         }
         
@@ -156,5 +160,24 @@ class Sudo
         }
 
         return false;
+    }
+
+    /**
+     * Generates the URL of the request that triggered the "sudo mode" entry.
+     * We generate the request URL in this specific way since we want to allow
+     * applications to use the Composer package csun-metalab/laravel-proxypass
+     * and still work seamlessly.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return string
+     */
+    private function generateRequestUrl($request) {
+        $request_path = $request->path();
+        $query_string = $request->server('QUERY_STRING');
+        if(!empty($query_string)) {
+            $request_path .= "?{$query_string}";
+        }
+        
+        return url($request_path);
     }
 }
