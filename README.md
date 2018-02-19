@@ -248,7 +248,17 @@ Your Blade code might look something like this:
 ```
 @if(isSudoModeActive())
   <div class="alert alert-info">
-    <p>You are currently in sudo mode and can perform super-user tasks.</p>
+    <p>You can currently perform super-user tasks.</p>
+  </div>
+@endif
+```
+
+If, however, you also have enabled everything from the [Routes and Controller](#routes-and-controller) section you may also give the user the option to exit "sudo mode" early:
+
+```
+@if(isSudoModeActive())
+  <div class="alert alert-info">
+    <p>You can currently perform super-user tasks. <a href="{{ route('sudo.exit') }}">Exit sudo mode</a> if you no longer need this access.</p>
   </div>
 @endif
 ```
