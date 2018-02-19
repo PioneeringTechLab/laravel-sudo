@@ -120,9 +120,19 @@ Route::group(['middleware' => ['auth', 'sudo']], function () {
 });
 ```
 
-This is just an example, of course, but the above route group would first ensure that the individual is authenticated before attempting to access the sections. If the individual is authenticated, they would then be greeted with a password re-prompt if "sudo mode" is not currently active based upon the criteria set forth in the [Sudo Middleware](#sudo-middleware) section.
+This is just an example, of course, but the above route group would first ensure that the individual is authenticated before attempting to access the sections. If the individual is authenticated, they would then be greeted with a password re-prompt if "sudo mode" is not currently active based upon the criteria set forth in the [Sudo Criteria](#sudo-criteria) section.
 
 ### Sudo Middleware
+
+#### Sudo Criteria
+
+In order for the currently-authenticated user to be prompted with the password re-prompt, one of the following criteria must be met:
+
+1. The user is entering a "sudo mode" section for the first time in the session
+2. The length of time described by the [SUDO_DURATION](#sudo-duration) environment variable has passed since the user last entered his password
+3. The user attempted to enter "sudo mode" and the re-authentication attempt failed due to an incorrect password
+
+#### Sudo Functionality
 
 TBD
 
