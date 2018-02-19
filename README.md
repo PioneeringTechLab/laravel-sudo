@@ -26,6 +26,7 @@ The aforementioned integration would check whether the current user is actually 
     * [Check Sudo Mode](#check-sudo-mode)
     * [Generate Previous Input Markup](#generate-previous-input-markup)
 * [View](#view)
+    * [Hidden Input Metadata](#hidden-input-metadata)
 * [Resources](#resources)
 
 ## Installation
@@ -250,6 +251,8 @@ The view that will be displayed exists as `sudo.blade.php` and is located in the
 This view stands on its own as a Bootstrap view but you are free to customize it as you wish. Please take special care, however, when modifying anything around or inside the opening and closing `<form>` tags since that drives the "sudo mode" functionality.
 
 The previous request input values are rendered as hidden `<input>` elements that can be added immediately to the form by rendering the `$input_markup` string as HTML.
+
+### Hidden Input Metadata
 
 You will need to ensure that a hidden CSRF `_token` field exists in the form as well but that's as simple as adding the following in your Blade code:
 
