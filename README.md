@@ -17,9 +17,11 @@ The aforementioned integration would check whether the current user is actually 
 * [Required Environment Variables](#required-environment-variables)
 * [Optional Environment Variables](#optional-environment-variables)
 * [Middleware](#middleware)
-    * [Sudo Middleware](#sudo-middleware)
     * [Enforcing Sudo Mode](#enforcing-sudo-mode)
+    * [Sudo Middleware](#sudo-middleware)
 * [Custom Messages](#custom-messages)
+    * [Validation Messages](#validation-messages)
+    * [Authentication Messages](#authentication-messages)
 * [View](#view)
 * [Resources](#resources)
 
@@ -105,10 +107,6 @@ Default is `email`.
 
 This package is driven primarily by a single middleware class though it contains a considerable amount of functionality and decision-making.
 
-### Sudo Middleware
-
-TBD
-
 ### Enforcing Sudo Mode
 
 In order to enforce "sudo mode" you would need to protect a set of routes with both the `auth` and `sudo` middleware as shown here:
@@ -124,6 +122,10 @@ Route::group(['middleware' => ['auth', 'sudo']], function () {
 
 This is just an example, of course, but the above route group would first ensure that the individual is authenticated before attempting to access the sections. If the individual is authenticated, they would then be greeted with a password re-prompt if "sudo mode" is not currently active based upon the criteria set forth in the [Sudo Middleware](#sudo-middleware) section.
 
+### Sudo Middleware
+
+TBD
+
 ## Custom Messages
 
 The custom messages for this package can be found in `resources/lang/en/sudo.php` by default. The messages can also be overridden as needed.
@@ -131,6 +133,14 @@ The custom messages for this package can be found in `resources/lang/en/sudo.php
 You may also translate the messages in that file to other languages to promote localization, as well.
 
 The package reads from this file (using the configured localization) for all messages it must display to the user or write to any logs.
+
+### Validation Messages
+
+* `errors.v.password.required` - error message raised when the `sudo_password` field is left empty on the view
+
+### Authentication Messages
+
+* `errors.a.password.invalid` - error message raised when the sudo password entered does not match the user's credentials
 
 ## View
 
