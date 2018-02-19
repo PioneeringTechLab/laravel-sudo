@@ -126,9 +126,9 @@ class Sudo
 
         // if we should return the input and show the view, do it
         if($flash_and_show) {
-            // drop out the "sudo_password" and CSRF token values but return
-            // everything else for use
-            $input = $request->except('sudo_password', '_token');
+            // drop out the "sudo_password", "_method" and CSRF token values
+            // but return everything else for use
+            $input = $request->except('sudo_password', '_method', '_token');
             $input_markup = generatePreviousInputMarkup($input);
             return view('sudo::sudo', compact(
                 'sudo_errors', 'request_method', 'request_url', 'input',

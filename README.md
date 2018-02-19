@@ -177,7 +177,7 @@ The steps are as follows:
         3. If the user was masquerading, the current user instance is set back to the masqueraded user with a call to `Auth::login()` to allow the user to try again
         4. If the user was not masquerading, the current user instance is set with a call to `Auth::login()` to allow the user to try again
 6. If the password re-prompt should be shown (`$flash_and_show == true`) then the following steps are performed:
-    1. An array of previous request input is generated without the `sudo_password` and `_token` values for reasons in the [View](#view) section
+    1. An array of previous request input is generated without the `sudo_password`, `_method`, and `_token` values for reasons in the [View](#view) section
     2. A string representing the previous request input is generated so it can be rendered on the view in the form
     3. A view response is generated containing the variables in the [View](#view) section
     4. The middleware terminates its execution
@@ -222,7 +222,7 @@ Your Blade code might look something like this:
 
 You may use the `generatePreviousInputMarkup()` method to generate the input markup from the request that triggered entry into "sudo mode". The input elements will be rendered as hidden `<input>` elements and this method also has support for a deeply-nested input array.
 
-You would typically pass the `$input` array available in the view to this method. The `sudo_password` and `_token` values would not be included, however. A new `_token` value will need to be placed into the form within the view since the CSRF token would have been re-generated and the old token would cause an instance of `VerifyCsrfTokenException` to be thrown if it was used.
+You would typically pass the `$input` array available in the view to this method. The `sudo_password`, `_method`, and `_token` values would not be included, however. A new `_token` value will need to be placed into the form within the view since the CSRF token would have been re-generated and the old token would cause an instance of `VerifyCsrfTokenException` to be thrown if it was used.
 
 Your Blade code might look something like this (keep Laravel version in mind when using the un-sanitized syntax):
 
@@ -245,7 +245,7 @@ The view that will be displayed exists as `sudo.blade.php` and is located in the
 * `$request_url` - string representing the URL used to access the requested resource
 * `$input` - associative array of request input from the resource that triggered the password re-prompt
 * `$input_markup` - string representing the HTML markup of the input fields within `$input`
-* `$form_method` - string representing what the value of a plain-HTML form's `method` attribute should be
+* `$form_method` - string representing what the value of a plain-HTML form's `method` attribute should be (either `GET` or `POST`)
 
 This view stands on its own as a Bootstrap view but you are free to customize it as you wish. Please take special care, however, when modifying anything around or inside the opening and closing `<form>` tags since that drives the "sudo mode" functionality.
 
@@ -256,6 +256,14 @@ You will need to ensure that a hidden CSRF `_token` field exists in the form as 
 ```
 <input type="hidden" name="_token" value="{{ csrf_token() }}" />
 ```
+
+If your request was mapped to an HTTP method other than `GET` or `POST` you'll need an additional line to add the `_method` field as well:
+
+```
+<input type="hidden" name="_method" value="{{ $request_method }}" />
+```
+
+The provided `sudo.blade.php` view provides both of these two hidden tags already.
 
 ## Resources
 
