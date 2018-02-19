@@ -19,6 +19,9 @@ The aforementioned integration would check whether the current user is actually 
 * [Middleware](#middleware)
     * [Enforcing Sudo Mode](#enforcing-sudo-mode)
     * [Sudo Middleware](#sudo-middleware)
+* [Routes and Controller](#routes-and-controller)
+    * [Routes](#routes)
+    * [Controller](#controller)
 * [Custom Messages](#custom-messages)
     * [Validation Messages](#validation-messages)
     * [Authentication Messages](#authentication-messages)
@@ -183,6 +186,37 @@ The steps are as follows:
     3. A view response is generated containing the variables in the [View](#view) section
     4. The middleware terminates its execution
 7. If the password re-prompt should not be shown ("sudo mode" has either been successfully-entered or is already active within the configured duration) then the request moves to its next point in the pipeline
+
+## Routes and Controller
+
+This section is entirely optional. It should only be used if you are intending on allowing people to exit "sudo mode" manually before the given time duration has been exhausted.
+
+### Routes
+
+#### Laravel 5.1 and above
+
+Add the following to your `routes.php` or `routes/web.php` file depending on Laravel version to enable the route:
+
+```
+Route::get('exit_sudo', '\CSUNMetaLab\Sudo\Http\Controllers\SudoController@exitSudoMode')->name('sudo.exit');
+```
+
+#### Laravel 5.0
+
+Add the following group to your `routes.php` file to enable the route:
+
+```
+Route::get('exit_sudo', [
+  'uses' => '\CSUNMetaLab\Sudo\Http\Controllers\SudoController@exitSudoMode',
+  'as' => 'sudo.exit',
+]);
+```
+
+### Controller
+
+The controller is namespaced as `CSUNMetaLab\Sudo\Http\Controllers\SudoController`.
+
+The single method, `exitSudoMode()`, merely drops the session values that control "sudo mode" being active and redirects the user back to their previous location.
 
 ## Custom Messages
 
