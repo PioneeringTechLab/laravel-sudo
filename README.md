@@ -135,6 +135,8 @@ This is just an example, of course, but the above route group would first ensure
 
 ### Sudo Middleware
 
+The middlware class is namespaced as `CSUNMetaLab\Sudo\Http\Middleware\Sudo`.
+
 #### Sudo Criteria
 
 In order for the currently-authenticated user to be shown the password re-prompt, one of the following criteria must be met:
@@ -146,7 +148,39 @@ In order for the currently-authenticated user to be shown the password re-prompt
 
 #### Sudo Functionality
 
-TBD
+The functionality of the middleware is fairly in-depth and takes several cases into account.
+
+The steps are as follows:
+
+1. If the attempting to enter "sudo mode" has not authenticated (such as when a route has not been protected with the `auth` middleware) he is returned back to his previous location with an error message (`errors.a.user.invalid`)
+2. If the currently-authenticated user model is an instance or subclass of `CSUNMetaLab\Authentication\MetaUser` then the following checks are performed:
+    1. The user instance is checked for a masquerading user
+    2. The configuration is checked for whether the password re-prompt should occur only for masquerading users
+    3. If the user is not masquerading the request proceeds to the next point in the request pipeline and the prompt is ignored
+    4. If the user is masquerading then the the rest of the checks for the middleware proceed
+3. A decision is made whether to show the password re-prompt based on either criteria 1 or 2 in [Sudo Criteria](#sudo-criteria)
+4. If the password re-prompt should be shown, the following steps are performed:
+    1. The middleware checks to see whether a `sudo_password` value was included in the request
+    2. If the value was either left out or is empty and the HTTP request method is not `GET`, an error is generated; otherwise, the middleware continues processing further
+5. If the `sudo_password` request value has been included, the following steps are performed:
+    1. If the user instance is an instance or subclass of `CSUNMetaLab\Authentication\MetaUser` AND the user is masquerading, then the current user instance is swapped to be the *masquerading* (original) user, not the *masqueraded* (current) user.
+    2. The username (based upon the [SUDO_USERNAME](#sudo-username) attribute in the user model) is retrieved from the model
+    3. The username and re-prompted password credentials are checked with a call to `Auth::attempt()` to take any custom user providers into account without going straight to the database
+    4. If the call to `Auth::attempt()` succeeds, the following steps are performed:
+        1. The `sudo_last_time` session value is replaced with the current time
+        2. The `sudo_active` session value is set to `true`
+        3. If the user was masquerading, the current user instance to be reported by `Auth::user()` is swapped **back** to the *masqueraded* user and is no longer the *masquerading* user
+    5. If the call to `Auth::attempt()` fails, the following steps are performed:
+        1. The flag to show the password re-prompt is set to `true`
+        2. An error message (`errors.a.password.invalid`) is generated due to an incorrect password
+        3. If the user was masquerading, the current user instance is set back to the masqueraded user with a call to `Auth::login()` to allow the user to try again
+        4. If the user was not masquerading, the current user instance is set with a call to `Auth::login()` to allow the user to try again
+6. If the password re-prompt should be shown (`$flash_and_show == true`) then the following steps are performed:
+    1. An array of previous request input is generated without the `sudo_password` and `_token` values for reasons in the [View](#view) section
+    2. A string representing the previous request input is generated so it can be rendered on the view in the form
+    3. A view response is generated containing the variables in the [View](#view) section
+    4. The middleware terminates its execution
+7. If the password re-prompt should not be shown ("sudo mode" has either been successfully-entered or is already active within the configured duration) then the request moves to its next point in the pipeline
 
 ## Custom Messages
 
@@ -231,3 +265,12 @@ You will need to ensure that a hidden CSRF `_token` field exists in the form as 
 * [Middleware in Laravel 5.3](https://laravel.com/docs/5.3/middleware)
 * [Middleware in Laravel 5.4](https://laravel.com/docs/5.4/middleware)
 * [Middleware in Laravel 5.5](https://laravel.com/docs/5.5/middleware)
+
+### Blade Templates
+
+* [Templates in Laravel 5.0](https://laravel.com/docs/5.0/templates)
+* [Blade in Laravel 5.1](https://laravel.com/docs/5.1/blade)
+* [Blade in Laravel 5.2](https://laravel.com/docs/5.2/blade)
+* [Blade in Laravel 5.3](https://laravel.com/docs/5.3/blade)
+* [Blade in Laravel 5.4](https://laravel.com/docs/5.4/blade)
+* [Blade in Laravel 5.5](https://laravel.com/docs/5.5/blade)
