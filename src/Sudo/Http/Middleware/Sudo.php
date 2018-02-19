@@ -9,11 +9,14 @@ use Carbon\Carbon;
 class Sudo
 {
     /**
-     * Handle an incoming request.
+     * Handle an incoming request. You may wish to read the documentation on
+     * the steps performed by this middleware as well.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
      * @return mixed
+     *
+     * @see https://github.com/csun-metalab/laravel-sudo/blob/dev/README.md
      */
     public function handle($request, Closure $next)
     {
@@ -47,9 +50,10 @@ class Sudo
         $show_sudo = $this->shouldShowSudo($request);
         $sudo_username = config('sudo.username');
 
-        // retrieve request data
-        $request_method = $request->method();
+        // retrieve request data and generate the form request method
+        $request_method = strtoupper($request->method());
         $request_url = $this->generateRequestUrl($request);
+        $form_method = ($request_method == "GET" ? "GET" : "POST");
 
         $flash_and_show = false; // true to flash input and show sudo form
         $sudo_errors = []; // key-value pair of any error messages that arise
@@ -64,7 +68,7 @@ class Sudo
             // password was supplied since we will need to add an error if
             // that case has not been met
             $pw = $request->input('sudo_password');
-            if(empty($pw) && !(strtolower($request_method) == 'get')) {
+            if(empty($pw) && $request_method != 'GET') {
                 $sudo_errors['password'] = trans('sudo.errors.v.password.required');
             }
         }
@@ -128,7 +132,7 @@ class Sudo
             $input_markup = generatePreviousInputMarkup($input);
             return view('sudo::sudo', compact(
                 'sudo_errors', 'request_method', 'request_url', 'input',
-                'input_markup'
+                'input_markup', 'form_method'
             ));
         }
         

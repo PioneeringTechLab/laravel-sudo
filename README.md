@@ -120,14 +120,15 @@ This package is driven primarily by a single middleware class though it contains
 
 ### Enforcing Sudo Mode
 
+**NOTE**: Please do not protect routes with a `GET` method using the `sudo` middleware as the request is re-sent using the original HTTP method and data (and hence the password would become part of the URL in a `GET` submission). Use some kind of role authorization check or policy on `GET` routes instead.
+
 In order to enforce "sudo mode" you would need to protect a set of routes with both the `auth` and `sudo` middleware as shown here:
 
 ```
 Route::group(['middleware' => ['auth', 'sudo']], function () {
-  Route::get('secret', 'SomeController@getSecret');
-  Route::post('secret', 'SomeController@postSecret');
-  Route::get('admin', 'SomeController@getAdmin');
-  Route::post('admin', 'SomeController@postAdmin');
+  Route::post('secret_data', 'SomeController@postSecret');
+  Route::post('admin_data', 'SomeController@postAdmin');
+  Route::delete('remove_user', 'SomeController@removeUser');
 });
 ```
 
@@ -244,6 +245,7 @@ The view that will be displayed exists as `sudo.blade.php` and is located in the
 * `$request_url` - string representing the URL used to access the requested resource
 * `$input` - associative array of request input from the resource that triggered the password re-prompt
 * `$input_markup` - string representing the HTML markup of the input fields within `$input`
+* `$form_method` - string representing what the value of a plain-HTML form's `method` attribute should be
 
 This view stands on its own as a Bootstrap view but you are free to customize it as you wish. Please take special care, however, when modifying anything around or inside the opening and closing `<form>` tags since that drives the "sudo mode" functionality.
 
