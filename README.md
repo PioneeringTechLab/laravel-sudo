@@ -198,7 +198,8 @@ This section is entirely optional. It should only be used if you are intending o
 Add the following to your `routes.php` or `routes/web.php` file depending on Laravel version to enable the route:
 
 ```
-Route::get('exit_sudo', '\CSUNMetaLab\Sudo\Http\Controllers\SudoController@exitSudoMode')->name('sudo.exit');
+Route::get('exit_sudo', '\CSUNMetaLab\Sudo\Http\Controllers\SudoController@exitSudoMode')
+   ->name('sudo.exit');
 ```
 
 #### Laravel 5.0
@@ -258,7 +259,9 @@ If, however, you also have enabled everything from the [Routes and Controller](#
 ```
 @if(isSudoModeActive())
   <div class="alert alert-info">
-    <p>You can currently perform super-user tasks. <a href="{{ route('sudo.exit') }}">Exit sudo mode</a> if you no longer need this access.</p>
+    <p>
+      You can currently perform super-user tasks. <a href="{{ route('sudo.exit') }}">Exit sudo mode</a> if you no longer need this access.
+    </p>
   </div>
 @endif
 ```
