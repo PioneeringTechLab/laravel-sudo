@@ -126,10 +126,10 @@ This is just an example, of course, but the above route group would first ensure
 
 #### Sudo Criteria
 
-In order for the currently-authenticated user to be prompted with the password re-prompt, one of the following criteria must be met:
+In order for the currently-authenticated user to be shown the password re-prompt, one of the following criteria must be met:
 
 1. The user is entering a "sudo mode" section for the first time in the session
-2. The length of time described by the [SUDO_DURATION](#sudo-duration) environment variable has passed since the user last entered his password
+2. The length of time described by the [SUDO_DURATION](#sudo-duration) environment variable has passed since the user last entered his password to enter "sudo mode"
 3. The user attempted to enter "sudo mode" and the re-authentication attempt failed due to an incorrect password
 
 #### Sudo Functionality
