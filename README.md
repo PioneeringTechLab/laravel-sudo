@@ -1,6 +1,6 @@
 # Laravel Sudo
 
-Composer package for Laravel 5.0 and above that allows for the use of "sudo mode" in protected areas.
+Composer package for Laravel 5.0 and above that allows for the use of "sudo mode" in protected areas. "Sudo mode" refers to the requirement that a user must re-enter his password before performing certain actions and will not have to re-enter it for a certain amount of time, similar to how the `sudo` utility functions on *nix-based operating systems.
 
 The mode will last for a pre-determined amount of time before either a re-prompt or the currently-authenticated user logs-out.
 
@@ -85,7 +85,7 @@ The following assets are published:
 
 ## Required Environment Variables
 
-There are currently no required environment variables but there is an [optional environment variable](#optional-environment-variables).
+There are currently no required environment variables but there are [optional environment variables](#optional-environment-variables).
 
 ## Optional Environment Variables
 
@@ -111,7 +111,7 @@ TBD
 
 ### Enforcing Sudo Mode
 
-In order to enforce "sudo mode" you would need to protect a set of routes with both the `auth` and `sudo` middleware like so:
+In order to enforce "sudo mode" you would need to protect a set of routes with both the `auth` and `sudo` middleware as shown here:
 
 ```
 Route::group(['middleware' => ['auth', 'sudo']], function () {
