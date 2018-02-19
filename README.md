@@ -141,7 +141,8 @@ In order for the currently-authenticated user to be shown the password re-prompt
 
 1. The user is entering a "sudo mode" section for the first time in the session
 2. The length of time described by the [SUDO_DURATION](#sudo-duration) environment variable has passed since the user last entered his password to enter "sudo mode"
-3. The user attempted to enter "sudo mode" and the re-authentication attempt failed due to an incorrect password
+3. The [SUDO_PROMPT_ONLY_WHILE_MASQUERADING](#sudo-prompt-only-while-masquerading) has been set to `true` and the matching criteria has been met
+4. The user attempted to enter "sudo mode" and the re-authentication attempt failed due to an incorrect password
 
 #### Sudo Functionality
 
@@ -202,7 +203,15 @@ You may, however, opt to use the pre-generated `$input_markup` variable that wil
 
 ## View
 
-TBD
+The view that will be displayed exists as `sudo.blade.php` and is located in the `resources/views/vendor/sudo` directory. The following variables are exposed to the view by the middleware:
+
+* `$sudo_errors` - associative array of any errors that have arisen during the password re-prompt
+* `$request_method` - string representing the HTTP method used to access the requested resource
+* `$request_url` - string representing the URL used to access the requested resource
+* `$input` - associative array of request input from the resource that triggered the password re-prompt
+* `$input_markup` - string representing the HTML markup of the input fields within `$input`
+
+This view stands on its own as a Bootstrap view but you are free to customize it as you wish. Please take special care, however, when modifying anything around or inside the opening and closing `<form>` tags since that drives the "sudo mode" functionality.
 
 ## Resources
 
