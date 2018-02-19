@@ -59,7 +59,8 @@ class Sudo
                 }
             }
 
-            // show the sudo view if the credentials do not match
+            // if the credentials match, then set the session value; otherwise,
+            // show the sudo view since the credentials do not match
             $creds = [
                 $sudo_username => $user->$sudo_username,
                 'password' => $request->input('sudo_password')

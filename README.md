@@ -12,9 +12,6 @@ The aforementioned integration would check whether the current user is actually 
 
 * [Installation](#installation)
     * [Composer and Service Provider](#composer-and-service-provider)
-    * [Route Installation](#route-installation)
-        * [Laravel 5.1 and Above](#laravel-51-and-above)
-        * [Laravel 5.0](#laravel-50)
     * [Middleware Installation](#middleware-installation)
     * [Publish Everything](#publish-everything)
 * [Required Environment Variables](#required-environment-variables)
@@ -53,38 +50,6 @@ Add the service provider to your `providers` array in `config/app.php` in Larave
 
    //...
 ],
-```
-
-### Route Installation
-
-You will now need to add the various routes for the package. They are named routes since you can then customize the route paths based upon your own application. The package will use the route names instead of the paths when performing operations.
-
-#### Laravel 5.1 and Above
-
-Add the following group to your `routes.php` or `routes/web.php` file depending on Laravel version to enable the routes:
-
-```
-Route::group(['middleware' => ['auth']], function () {
-  Route::get('sudo', '\CSUNMetaLab\Sudo\Http\Controllers\SudoController@create')->name('sudo.create');
-  Route::post('sudo', '\CSUNMetaLab\Sudo\Http\Controllers\SudoController@store')->name('sudo.store');
-});
-```
-
-#### Laravel 5.0
-
-Add the following group to your `routes.php` file to enable the routes:
-
-```
-Route::group(['middleware' => ['auth']], function () {
-  Route::get('sudo', [
-    'uses' => '\CSUNMetaLab\Sudo\Http\Controllers\SudoController@create',
-    'as' => 'sudo.create',
-  ]);
-  Route::post('sudo', [
-    'uses' => '\CSUNMetaLab\Sudo\Http\Controllers\SudoController@store',
-    'as' => 'sudo.store',
-  ]);
-});
 ```
 
 ### Middleware Installation
@@ -130,9 +95,15 @@ The time (in minutes) that "sudo mode" is active for the existing authenticated 
 
 Default is 120 minutes (two hours).
 
+### SUDO_USERNAME
+
+The attribute in your configured `User` model that represents the username by which an individual authenticates.
+
+Default is `email`.
+
 ## Middleware
 
-TBD
+This package is driven primarily by a single middleware class though it contains a considerable amount of functionality and decision-making.
 
 ### Sudo Middleware
 
@@ -140,7 +111,18 @@ TBD
 
 ### Enforcing Sudo Mode
 
-TBD
+In order to enforce "sudo mode" you would need to protect a set of routes with both the `auth` and `sudo` middleware like so:
+
+```
+Route::group(['middleware' => ['auth', 'sudo']], function () {
+  Route::get('secret', 'SomeController@getSecret');
+  Route::post('secret', 'SomeController@postSecret');
+  Route::get('admin', 'SomeController@getAdmin');
+  Route::post('admin', 'SomeController@postAdmin');
+});
+```
+
+This is just an example, of course, but the above route group would first ensure that the individual is authenticated before attempting to access the sections. If the individual is authenticated, they would then be greeted with a password re-prompt if "sudo mode" is not currently active based upon the criteria set forth in the [Sudo Middleware](#sudo-middleware) section.
 
 ## Custom Messages
 
