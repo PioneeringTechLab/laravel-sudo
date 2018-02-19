@@ -21,7 +21,7 @@ class Sudo
         $sudo_username = config('sudo.username');
 
         $flash_and_show = false; // true to flash input and show sudo form
-        $sudo_errors = [];
+        $sudo_errors = []; // key-value pair of any error messages that arise
 
         // display the sudo view with flashed input data if it matches the
         // criteria specified by shouldShowSudo() or if there was an auth
@@ -96,7 +96,8 @@ class Sudo
 
         // if we should flash the input and show the view, do it
         if($flash_and_show) {
-            $request->flash();
+            // drop out the "sudo_password" value but flash everything else
+            $request->flashExcept('sudo_password');
             return view('sudo::sudo', compact('sudo_errors'));
         }
         

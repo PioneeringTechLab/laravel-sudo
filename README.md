@@ -1,6 +1,6 @@
 # Laravel Sudo
 
-Composer package for Laravel 5.0 and above that allows for the use of "sudo mode" in protected areas. "Sudo mode" refers to the requirement that a user must re-enter his password before performing certain actions and will not have to re-enter it for a certain amount of time, similar to how the `sudo` utility functions on *nix-based operating systems.
+Composer package for Laravel 5.0 and above that allows for the use of "sudo mode" in protected areas. "Sudo mode" refers to the requirement that a user must re-enter his password before performing certain actions and will not have to re-enter it for a certain amount of time, similar to how the [sudo utility](https://en.wikipedia.org/wiki/Sudo) functions on *nix-based operating systems.
 
 The mode will last for a pre-determined amount of time before either a re-prompt or the currently-authenticated user logs-out.
 
