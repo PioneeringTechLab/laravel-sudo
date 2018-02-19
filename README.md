@@ -19,17 +19,9 @@ The aforementioned integration would check whether the current user is actually 
     * [Publish Everything](#publish-everything)
 * [Required Environment Variables](#required-environment-variables)
 * [Optional Environment Variables](#optional-environment-variables)
-* [Routing](#routing)
-    * [Display Sudo Form](#display-sudo-form)
-    * [Process Sudo Form](#process-sudo-form)
 * [Middleware](#middleware)
     * [Sudo Middleware](#sudo-middleware)
     * [Enforcing Sudo Mode](#enforcing-sudo-mode)
-* [Controller](#controller)
-    * [Showing the Sudo Form](#showing-the-sudo-form)
-    * [Processing the Sudo Form](#processing-the-sudo-form)
-* [Custom Form Request](#custom-form-request)
-    * [Sudo Form Request](#sudo-form-request)
 * [Custom Messages](#custom-messages)
 * [View](#view)
 * [Resources](#resources)
@@ -138,25 +130,6 @@ The time (in minutes) that "sudo mode" is active for the existing authenticated 
 
 Default is 120 minutes (two hours).
 
-## Routing
-
-In all cases for the routes exposed by the package, you are free to modify the path of the route but keep these two constraints in mind:
-
-1. Please **do not** modify the HTTP method of the routes unless you are also planning to modify the published view.
-2. Please **do not** modify the route names since both the underlying controller functionality as well as the published view use them.
-
-### Display Sudo Form
-
-* Path: `/sudo`
-* HTTP method: `GET`
-* Route name: `sudo.create`
-
-### Process Sudo Form
-
-* Path: `/sudo`
-* HTTP method: `POST`
-* Route name: `sudo.store`
-
 ## Middleware
 
 TBD
@@ -168,36 +141,6 @@ TBD
 ### Enforcing Sudo Mode
 
 TBD
-
-## Controller
-
-TBD
-
-### Showing the Sudo Form
-
-TBD
-
-### Processing the Sudo Form
-
-TBD
-
-## Custom Form Request
-
-The controller leverages a custom form request class in order to accept and process the input. The form request exposes custom validation rules and error messages.
-
-### Sudo Form Request
-
-This class is namespaced as `CSUNMetaLab\Sudo\Http\Requests\SudoFormRequest`.
-
-Most of the data required for processing will be added by the matching controller so there are not many validation rules for this request.
-
-#### Validation Rules
-
-`password.required`: the `password` field must have a non-null value in the request
-
-#### Validation Messages
-
-`sudo.errors.v.password.required`: the `password` field has no input
 
 ## Custom Messages
 

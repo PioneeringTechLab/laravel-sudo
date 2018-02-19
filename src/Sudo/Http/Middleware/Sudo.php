@@ -21,7 +21,7 @@ class Sudo
         $sudo_username = config('sudo.username');
 
         $flash_and_show = false; // true to flash input and show sudo form
-        $sudoErrors = [];
+        $sudo_errors = [];
 
         // display the sudo view with flashed input data if it matches the
         // criteria specified by shouldShowSudo() or if there was an auth
@@ -34,13 +34,30 @@ class Sudo
             // that case has not been met
             $pw = $request->input('sudo_password');
             if(empty($pw) && !$request->isMethod('get')) {
-                $sudoErrors['password'] = trans('sudo.errors.v.password.required');
+                $sudo_errors['password'] = trans('sudo.errors.v.password.required');
             }
         }
         else if($request->has('sudo_password')) {
-            // TODO: this will have to be modified to take a masqueraded user
-            // into account if using a subclass of MetaUser
+            // integration with the csun-metalab/laravel-directory-authentication
+            // package requires a check on whether the User model instance is
+            // an instance of the base MetaUser class
             $user = Auth::user();
+            $masqueraded_user = $user;
+            $is_meta_user = is_a($user, "CSUNMetaLab\Authentication\MetaUser");
+            $is_masquerading = false;
+
+            if($is_meta_user) {
+                // we have to take into account whether the currently-authenticated
+                // user according to Auth::user() is actually an account that is
+                // being masqueraded and NOT the original user that logged-in
+                if($user->isMasquerading()) {
+                    // replace the $user instance with the masquerading user
+                    // so the password will be checked on that user, not the
+                    // masqueraded user
+                    $is_masquerading = true;
+                    $user = $user->getMasqueradingUser();
+                }
+            }
 
             // show the sudo view if the credentials do not match
             $creds = [
@@ -52,22 +69,34 @@ class Sudo
                 // time for future time checks
                 $time = Carbon::now()->toDateTimeString(); // Y-m-d H:i:s
                 session(['sudo_last_time' => $time]);
+
+                // if we were masquerading, then switch back to the masqueraded
+                // user instead of the masquerading user
+                if($is_masquerading) {
+                    Auth::login($masqueraded_user);
+                }
             }
             else
             {
                 $flash_and_show = true;
-                $sudoErrors['password'] = trans('sudo.errors.a.password.invalid');
+                $sudo_errors['password'] = trans('sudo.errors.a.password.invalid');
 
                 // even though the authentication attempt failed, make the user
                 // instance active to allow for them to try again
-                Auth::login($user);
+                if($is_masquerading) {
+                    Auth::login($masqueraded_user);
+                }
+                else
+                {
+                    Auth::login($user);
+                }
             }
         }
 
         // if we should flash the input and show the view, do it
         if($flash_and_show) {
             $request->flash();
-            return view('sudo::sudo', compact('sudoErrors'));
+            return view('sudo::sudo', compact('sudo_errors'));
         }
         
         return $next($request);
