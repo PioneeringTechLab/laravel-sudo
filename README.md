@@ -189,13 +189,13 @@ You may use the `generatePreviousInputMarkup()` method to generate the input mar
 
 You would typically pass the `$input` array available in the view to this method. The `sudo_password` and `_token` values would not be included, however. A new `_token` value will need to be placed into the form within the view since the CSRF token would have been re-generated and the old token would cause an instance of `VerifyCsrfTokenException` to be thrown if it was used.
 
-Your Blade code might look something like this:
+Your Blade code might look something like this (keep Laravel version in mind when using the un-sanitized syntax):
 
 ```
 {!! generatePreviousInputMarkup($input) !!}
 ```
 
-You may, however, opt to use the pre-generated `$input_markup` variable that will be passed to the view instead. Then your Blade code might look like this:
+You may, however, opt to use the pre-generated `$input_markup` variable that will be passed to the view instead. Then your Blade code might look like this (keep Laravel version in mind when using the un-sanitized syntax):
 
 ```
 {!! $input_markup !!}
@@ -212,6 +212,14 @@ The view that will be displayed exists as `sudo.blade.php` and is located in the
 * `$input_markup` - string representing the HTML markup of the input fields within `$input`
 
 This view stands on its own as a Bootstrap view but you are free to customize it as you wish. Please take special care, however, when modifying anything around or inside the opening and closing `<form>` tags since that drives the "sudo mode" functionality.
+
+The previous request input values are rendered as hidden `<input>` elements that can be added immediately to the form by rendering the `$input_markup` string as HTML.
+
+You will need to ensure that a hidden CSRF `_token` field exists in the form as well but that's as simple as adding the following in your Blade code:
+
+```
+<input type="hidden" name="_token" value="{{ csrf_token() }}" />
+```
 
 ## Resources
 
