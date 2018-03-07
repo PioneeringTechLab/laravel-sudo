@@ -50,6 +50,7 @@ class Sudo
         // status or passed duration
         $show_sudo = $this->shouldShowSudo($request);
         $sudo_username = config('sudo.username');
+        $pw = $request->input('sudo_password');
 
         // retrieve request data and generate the form request method
         $request_method = strtoupper($request->method());
@@ -68,7 +69,6 @@ class Sudo
             // if we are processing the sudo form, check to see whether a
             // password was supplied since we will need to add an error if
             // that case has not been met
-            $pw = $request->input('sudo_password');
             if(empty($pw) && $request->has('sudo_mode_submission')) {
                 $sudo_errors['password'] = trans('sudo.errors.v.password.required');
             }
@@ -94,7 +94,7 @@ class Sudo
             // show the sudo view since the credentials do not match
             $creds = [
                 'username' => $user->$sudo_username,
-                'password' => $request->input('sudo_password')
+                'password' => $pw
             ];
             if(Auth::attempt($creds)) {
                 // password matches, so enable sudo mode and set the last sudo
