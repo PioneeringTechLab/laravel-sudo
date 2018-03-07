@@ -29,6 +29,7 @@ A sample application that leverages this package is available in a repo called [
     * [Authentication Messages](#authentication-messages)
 * [Helper Methods](#helper-methods)
     * [Check Sudo Mode](#check-sudo-mode)
+    * [Exit Sudo Mode](#exit-sudo-mode)
     * [Generate Previous Input Markup](#generate-previous-input-markup)
 * [View](#view)
     * [Hidden Input Metadata](#hidden-input-metadata)
