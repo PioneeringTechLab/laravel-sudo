@@ -11,6 +11,16 @@ function isSudoModeActive() {
 }
 
 /**
+ * Removes the various sudo session values. This effectively exits sudo mode
+ * since it will no longer be seen as active.
+ */
+function exitSudoMode() {
+	// drop the session values
+	session()->forget('sudo_active');
+	session()->forget('sudo_last_time');
+}
+
+/**
  * Generates and returns an HTML string that represents all of the previous
  * input from the action that triggered the sudo mode re-prompt. The input
  * elements will be rendered as hidden elements.

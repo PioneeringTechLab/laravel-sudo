@@ -2,8 +2,6 @@
 
 namespace CSUNMetaLab\Sudo\Http\Controllers;
 
-use Illuminate\Http\Request;
-
 use Illuminate\Routing\Controller as BaseController;
 
 class SudoController extends BaseController
@@ -14,10 +12,9 @@ class SudoController extends BaseController
 	 *
 	 * @return RedirectResponse
 	 */
-	public function exitSudoMode(Request $request) {
-		// drop the session values
-		$request->session()->forget('sudo_active');
-		$request->session()->forget('sudo_last_time');
+	public function exitSudoMode() {
+		// leverage the helper function
+		exitSudoMode();
 
 		// redirect back
 		return redirect()->back();

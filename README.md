@@ -282,6 +282,12 @@ If, however, you also have enabled everything from the [Routes and Controller](#
 @endif
 ```
 
+### Exit Sudo Mode
+
+You may exit "sudo mode" by invoking the `exitSudoMode()` method anywhere in your application. Doing so removes the relevant key/value pairs from the session.
+
+You will probably want to do this right after a call to `Auth::logout()` as well to prevent the values from persisting.
+
 ### Generate Previous Input Markup
 
 You may use the `generatePreviousInputMarkup()` method to generate the input markup from the request that triggered entry into "sudo mode". The input elements will be rendered as hidden `<input>` elements and this method also has support for a deeply-nested input array.
