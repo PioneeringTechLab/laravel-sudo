@@ -52,6 +52,10 @@ class Sudo
         $sudo_username = config('sudo.username');
         $pw = $request->input('sudo_password');
 
+        // array keys that will be used for Auth::attempt()
+        $auth_username_key = config('sudo.auth_username_key');
+        $auth_password_key = config('sudo.auth_password_key');
+
         // retrieve request data and generate the form request method
         $request_method = strtoupper($request->method());
         $request_url = $this->generateRequestUrl($request);
@@ -93,8 +97,8 @@ class Sudo
             // if the credentials match, then set the session value; otherwise,
             // show the sudo view since the credentials do not match
             $creds = [
-                'username' => $user->$sudo_username,
-                'password' => $pw
+                $auth_username_key => $user->$sudo_username,
+                $auth_password_key => $pw
             ];
             if(Auth::attempt($creds)) {
                 // password matches, so enable sudo mode and set the last sudo
