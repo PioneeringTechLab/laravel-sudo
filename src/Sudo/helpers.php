@@ -36,7 +36,7 @@ function generatePreviousInputMarkup($input, $inputKey="") {
 			if(!empty($inputKey)) {
 				$k = $inputKey;
 			}
-			$markup .= "<input type='hidden' name='$k' value='$value' />\n";
+			$markup .= "<input type=\"hidden\" name=\"$k\" value=\"$value\" />\n";
 		}
 	}
 
