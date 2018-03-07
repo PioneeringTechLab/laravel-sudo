@@ -5,6 +5,7 @@ namespace CSUNMetaLab\Sudo\Http\Middleware;
 use Auth;
 use Closure;
 use Carbon\Carbon;
+use Log;
 
 class Sudo
 {
@@ -67,12 +68,13 @@ class Sudo
             // if we are processing the sudo form, check to see whether a
             // password was supplied since we will need to add an error if
             // that case has not been met
-            $pw = $request->input('sudo_password');
+            /*$pw = $request->input('sudo_password');
+            dd($request_method);
             if(empty($pw) && $request_method != 'GET') {
                 $sudo_errors['password'] = trans('sudo.errors.v.password.required');
-            }
+            }*/
         }
-        else if($request->has('sudo_password')) {
+        if($request->has('sudo_password')) {
             // integration with the csun-metalab/laravel-directory-authentication
             // package requires a check on whether the User model instance is
             // an instance of the base MetaUser class so we will store the
@@ -130,10 +132,10 @@ class Sudo
             // but return everything else for use
             $input = $request->except('sudo_password', '_method', '_token');
             $input_markup = generatePreviousInputMarkup($input);
-            return view('sudo::sudo', compact(
+            return response(view('sudo::sudo', compact(
                 'sudo_errors', 'request_method', 'request_url', 'input',
                 'input_markup', 'form_method'
-            ));
+            )));
         }
         
         return $next($request);
