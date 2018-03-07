@@ -335,7 +335,7 @@ Finally, ensure that the following hidden `<input>` element exists as well since
 <input type="hidden" name="sudo_mode_submission" value="true" />
 ```
 
-The provided `sudo.blade.php` view provides both of these two hidden tags already.
+The provided `sudo.blade.php` view provides all of these hidden tags already.
 
 ## Resources
 
