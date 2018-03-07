@@ -68,11 +68,10 @@ class Sudo
             // if we are processing the sudo form, check to see whether a
             // password was supplied since we will need to add an error if
             // that case has not been met
-            /*$pw = $request->input('sudo_password');
-            dd($request_method);
-            if(empty($pw) && $request_method != 'GET') {
+            $pw = $request->input('sudo_password');
+            if(empty($pw) && $request->has('sudo_mode_submission')) {
                 $sudo_errors['password'] = trans('sudo.errors.v.password.required');
-            }*/
+            }
         }
         if($request->has('sudo_password')) {
             // integration with the csun-metalab/laravel-directory-authentication
@@ -94,7 +93,7 @@ class Sudo
             // if the credentials match, then set the session value; otherwise,
             // show the sudo view since the credentials do not match
             $creds = [
-                $sudo_username => $user->$sudo_username,
+                'username' => $user->$sudo_username,
                 'password' => $request->input('sudo_password')
             ];
             if(Auth::attempt($creds)) {
@@ -108,6 +107,9 @@ class Sudo
                 if($is_masquerading) {
                     Auth::login($masqueraded_user);
                 }
+
+                // we should not show the sudo screen again
+                $flash_and_show = false;
             }
             else
             {

@@ -313,6 +313,12 @@ If your request was mapped to an HTTP method other than `GET` or `POST` you'll n
 <input type="hidden" name="_method" value="{{ $request_method }}" />
 ```
 
+Finally, ensure that the following hidden `<input>` element exists as well since that tells the middleware whether the submission came from the "sudo mode" screen:
+
+```
+<input type="hidden" name="sudo_mode_submission" value="true" />
+```
+
 The provided `sudo.blade.php` view provides both of these two hidden tags already.
 
 ## Resources
