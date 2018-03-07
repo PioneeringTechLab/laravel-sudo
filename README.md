@@ -110,6 +110,22 @@ The attribute in your configured `User` model that represents the username by wh
 
 Default is `email`.
 
+### SUDO_AUTH_USERNAME_KEY
+
+The username key used in the call to `Auth::attempt()` when trying the provided user credentials. This is typically the first key in the array that gets passed to `Auth::attempt()`.
+
+This is modifiable in order to allow the package to conform to your custom auth driver.
+
+Default is `username`.
+
+### SUDO_AUTH_PASSWORD_KEY
+
+The password key used in the call to `Auth::attempt()` when trying the provided user credentials. This is typically the second key in the array that gets passed to `Auth::attempt()`.
+
+This is modifiable in order to allow the package to conform to your custom auth driver.
+
+Default is `password`.
+
 ### SUDO_PROMPT_ONLY_WHILE_MASQUERADING
 
 This value only matters when used in conjunction with the Composer package [csun-metalab/laravel-directory-authentication](https://github.com/csun-metalab/laravel-directory-authentication) to promote further integration between the two packages.
