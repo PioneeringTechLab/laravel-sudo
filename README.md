@@ -8,6 +8,8 @@ This package can also integrate with the [Laravel Directory Authentication](http
 
 The aforementioned integration would check whether the current user is actually masquerading as someone else. That way, the password prompt will be for the *masquerading* user, not the *masqueraded* user.
 
+A sample application that leverages this package is available in a repo called [Laravel Sudo Sample](https://github.com/csun-metalab/laravel-sudo-sample).
+
 ## Table of Contents
 
 * [Installation](#installation)
