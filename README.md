@@ -21,6 +21,7 @@ A sample application that leverages this package is available in a repo called [
 * [Middleware](#middleware)
     * [Enforcing Sudo Mode](#enforcing-sudo-mode)
     * [Sudo Middleware](#sudo-middleware)
+    * [Limitations](#limitations)
 * [Routes and Controller](#routes-and-controller)
     * [Routes](#routes)
     * [Controller](#controller)
@@ -205,6 +206,12 @@ The steps are as follows:
     3. A view response is generated containing the variables in the [View](#view) section
     4. The middleware terminates its execution
 7. If the password re-prompt should not be shown ("sudo mode" has either been successfully-entered or is already active within the configured duration) then the request moves to its next point in the pipeline
+
+### Limitations
+
+The middleware will work with any kind of textual data, even arrays. This will fit the majority of use cases so the majority of users will not have issues.
+
+However, the middleware does not currently support passing along file uploads in the request.
 
 ## Routes and Controller
 
