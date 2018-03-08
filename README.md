@@ -155,7 +155,7 @@ Route::group(['middleware' => ['auth', 'sudo']], function () {
 
 This is just an example, of course, but the above route group would first ensure that the individual is authenticated before attempting to access the sections. If the individual is authenticated, they would then be greeted with a password re-prompt if "sudo mode" is not currently active based upon the criteria set forth in the [Sudo Criteria](#sudo-criteria) section.
 
-**NOTE**: Please **do not** protect routes with a `GET` method using the `sudo` middleware as the request is re-sent using the original HTTP method and data (and hence the password would become part of the URL in a `GET` submission). Use some kind of role authorization check or policy on `GET` routes instead.
+**NOTE**: Please **do not** protect routes with a `GET` method using the `sudo` middleware as the request is re-sent using the original HTTP method and data (and hence the password would become part of the URL in a `GET` submission). Use some kind of role authorization check or policy on `GET` routes instead. You are free to use the middleware on `GET` routes if you wish but please keep that caveat in mind.
 
 ### Sudo Middleware
 
@@ -185,7 +185,7 @@ The steps are as follows:
 3. A decision is made whether to show the password re-prompt based on either criteria 1 or 2 in [Sudo Criteria](#sudo-criteria)
 4. If the password re-prompt should be shown, the following steps are performed:
     1. The middleware checks to see whether a `sudo_password` value was included in the request
-    2. If the value was either left out or is empty and the HTTP request method is not `GET`, an error is generated; otherwise, the middleware continues processing further
+    2. If the value was either left out or is empty and the `sudo_mode_submission` value exists, an error is generated; otherwise, the middleware continues processing further
 5. If the `sudo_password` request value has been included, the following steps are performed:
     1. If the user instance is an instance or subclass of `CSUNMetaLab\Authentication\MetaUser` AND the user is masquerading, then the current user instance is swapped to be the *masquerading* (original) user, not the *masqueraded* (current) user.
     2. The username (based upon the [SUDO_USERNAME](#sudo-username) attribute in the user model) is retrieved from the model
